@@ -26,16 +26,16 @@ export function SocialLogin({ DOM, props }: IBaseSources): IBaseSinks {
     });
 
   const sinks = {
-    DOM: view(),
+    DOM: view(props$),
     OAuth: authRequest$
   };
   return sinks;
 }
 
-function view(): Stream<VNode> {
-  return xs.of(
+function view(props$: Stream<ISocialLoginProps>): Stream<VNode> {
+  return props$.map((el) => (
     <div className="social">
-      <button className="socialBtn">login with social</button>
+      <img className={`socialBtn ${el.provider}`} />
     </div>
-  );
+  ));
 }

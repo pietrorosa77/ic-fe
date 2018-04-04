@@ -21,3 +21,36 @@ h6 {
 #app {
     height: 100%;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.socialBtn {
+  width: 55px;
+  cursor: pointer;
+  height: 55px;
+  border-radius: 100%;
+  background-color: #fff;
+  border: 1px solid rgb(228, 225, 225);
+  &:hover {
+    opacity: 0.6;
+  }
+  &.google {
+    content: url('./img/google.png')
+  }
+
+  &.facebook {
+    content: url('./img/fb.png')
+  }
+
+  &.linkedin {
+    content: url('./img/lin.png')
+  }
+}

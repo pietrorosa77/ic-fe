@@ -18,7 +18,7 @@ export interface IBaseSources {
   onion: StateSource<any>;
   props?: any;
   API:APISource, 
-  OAuth: Stream<{ provider: string; code: string }>;
+  OAuth: Stream<{ provider: string; code: string, redirectUri: string }>;
 }
 
 export interface IBaseSinks {
@@ -38,3 +38,4 @@ export interface IBaseSinks {
 }
 
 export type Reducer<T> = (prev: T) => T | undefined;
+export const AUTHTOKENKEY = "AUTHTOKENKEY"

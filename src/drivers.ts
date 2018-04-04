@@ -10,7 +10,7 @@ import storageify from "cycle-storageify";
 import switchPath from "switch-path";
 import storageDriver from "@cycle/storage";
 
-import { Component } from "./interfaces";
+import { Component, AUTHTOKENKEY } from "./interfaces";
 import { makeOAuthDriver } from "./drivers/oAuth";
 import { makeAPIDriver } from "./drivers/apiDriver";
 
@@ -21,7 +21,7 @@ export type DriverThunkMapper = (t: DriverThunk) => DriverThunk;
 const driverThunks: DriverThunk[] = [
   ["DOM", () => makeDOMDriver("#app")],
   ["HTTP", () => makeHTTPDriver()],
-  ["API",()=> makeAPIDriver(() => { return localStorage.getItem("AUTHTOKEN") || undefined})],
+  ["API",()=> makeAPIDriver(() => { return localStorage.getItem(AUTHTOKENKEY) || undefined}, "https://fopggjizh8.execute-api.eu-west-1.amazonaws.com/prod")],
   ["time", () => timeDriver],
   ["history", () => makeHistoryDriver()],
   ["storage", () => storageDriver],

@@ -23,7 +23,7 @@ export function makeOAuthDriver(returnUrl: string) {
       complete: () => {}
     });
 
-    const authRet = getAuthReturn();
+    const authRet = getAuthReturn(returnUrl);
     if (!authRet) return adapt(xs.never());
 
     const response$ = adapt(
@@ -54,7 +54,7 @@ function mapAuthItemToAuth0Querystring(item:{
     client_id: item.clientId,
     redirect_uri: encodeURIComponent(item.returnUrl),
     state: item.csrfToken,
-    scope: encodeURIComponent(item.scope.join(""))
+    scope: encodeURIComponent(item.scope.join(" "))
   }
 }
 
@@ -70,7 +70,7 @@ function getProviderAuthURL(item:{
   return url;
 }
 
-function getAuthReturn() {
+function getAuthReturn(redirectUri: string) {
   const oauthLogin = localStorage.getItem(`OAUTHLOGIN`);
   if (!oauthLogin) return null;
 
@@ -86,5 +86,5 @@ function getAuthReturn() {
   if (ret.error || !csrfToken || !ret.state || csrfToken !== ret.state || !ret.code)
     throw new Error("unable to log in. Please try again later");
 
-  return { provider, code: ret.code };
+  return { provider, code: ret.code, redirectUri };
 }

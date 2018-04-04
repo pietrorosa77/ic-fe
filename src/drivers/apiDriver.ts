@@ -3,14 +3,14 @@ import { Driver } from '@cycle/run';
 import { adapt } from '@cycle/run/lib/adapt';
 import * as R from "ramda";
 
-export function createResponse$(tokenProvider: () => string | undefined, reqOptions: IApiCallOption): Stream<{ action: string, data?: Response }> {
+export function createResponse$(tokenProvider: () => string | undefined, reqOptions: IApiCallOption, apiUrl: string): Stream<{ action: string, data?: Response }> {
   const action = reqOptions.action
   return xs.create<{ action: string, data?: Response }>({
     start: async listener => {
       listener.next({ action: `${action}-START` });
       try {
         const result = await executeApiCall(
-          reqOptions.url,
+          `${apiUrl}/${reqOptions.url}`,
           reqOptions.method,
           reqOptions.data,
           tokenProvider()
@@ -19,19 +19,19 @@ export function createResponse$(tokenProvider: () => string | undefined, reqOpti
       } catch (error) {
         listener.error({ action: `${action}-ERROR`, data: error });
       } finally {
-        listener.next({ action: `${action}-COMPLETE` });
+        listener.complete()
       }
     },
     stop: () => { }
   });
 }
 
-export function makeAPIDriver(tokenProvider: () => string | undefined): Driver<Stream<IApiCallOption>, APISource> {
+export function makeAPIDriver(tokenProvider: () => string | undefined, apiUrl: string): Driver<Stream<IApiCallOption>, APISource> {
   function httpDriver(
     request$: Stream<IApiCallOption>,
     name: string
   ): APISource {
-    const response$$ = request$.map(requestInputToResponse$.bind(null, tokenProvider));
+    const response$$ = request$.map(requestInputToResponse$.bind(null, tokenProvider, apiUrl));
     const httpSource = new APISource(response$$, name, []);
     response$$.addListener({
       next: () => { },
@@ -115,8 +115,8 @@ export class APISource {
   };
 }
 
-function requestInputToResponse$(tokenProvider: () => string, reqInput: IApiCallOption): MemoryStream<{ action: string, data?: Response }> {
-  let response$ = createResponse$(tokenProvider, reqInput).remember();
+function requestInputToResponse$(tokenProvider: () => string, apiUrl: string, reqInput: IApiCallOption): MemoryStream<{ action: string, data?: Response }> {
+  let response$ = createResponse$(tokenProvider, reqInput, apiUrl).remember();
   response$.addListener({
     next: () => { },
     error: () => { },
