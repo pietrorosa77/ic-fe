@@ -88,7 +88,6 @@ function getProviderAuthURL(item: {
 function getAuthReturn(redirectUri: string) {
     const oauthLogin = localStorage.getItem(`OAUTHLOGIN`);
     localStorage.removeItem(`OAUTHLOGIN`);
-    console.log('here!!!' + oauthLogin);
     if (!oauthLogin) return null;
 
     const ret = R.compose(

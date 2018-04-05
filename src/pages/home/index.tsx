@@ -63,7 +63,11 @@ export function Home({ DOM, onion, OAuth, API, storage }: IBaseSources) {
                 facebookAuth.DOM
             )
         ),
-        OAuth: linkedinAuth.OAuth,
+        OAuth: xs.merge(
+            linkedinAuth.OAuth,
+            googleAuth.OAuth,
+            facebookAuth.OAuth
+        ),
         onion: initReducer$
     };
 }
