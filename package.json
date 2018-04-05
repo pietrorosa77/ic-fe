@@ -32,29 +32,22 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "format": "prettier --tab-width 4 --single-quote --write './**/*.{js,jsx,ts,tsx}'",
+    "format":
+      "prettier --tab-width 4 --single-quote --write './**/*.{js,jsx,ts,tsx}'",
     "start": "cycle-scripts start",
     "test": "cycle-scripts test",
     "build": "cycle-scripts build",
     "eject": "cycle-scripts eject",
     "clean": "cycle-scripts clean"
   },
-  "lintStaged": {
-    "*.{js,jsx,ts,tsx}": [
-      "npm run format",
-      "git add"
-    ]
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": ["npm run format", "git add"]
   },
   "nyc": {
     "instrument": false,
     "sourceMap": false,
-    "include": [
-      "src/components"
-    ],
-    "reporter": [
-      "html",
-      "text-summary"
-    ]
+    "include": ["src/components"],
+    "reporter": ["html", "text-summary"]
   },
   "mocha-webpack": {
     "include": [
