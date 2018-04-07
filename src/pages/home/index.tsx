@@ -17,6 +17,11 @@ export function Home({ DOM, onion, OAuth, API, storage }: IBaseSources) {
         prevState => (prevState === undefined ? {} : prevState)
     );
 
+    const redirectAuthenticated$ = (storage as any).local
+        .getItem(AUTHTOKENKEY)
+        .filter((el: string) => el !== null)
+        .mapTo('/my-ideas');
+
     const linProps$ = xs.of({
         provider: 'linkedin',
         authorizeUrl: config.linkedinOAuthUrl,
@@ -68,7 +73,8 @@ export function Home({ DOM, onion, OAuth, API, storage }: IBaseSources) {
             googleAuth.OAuth,
             facebookAuth.OAuth
         ),
-        onion: initReducer$
+        onion: initReducer$,
+        router: redirectAuthenticated$
     };
 }
 

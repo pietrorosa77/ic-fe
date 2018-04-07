@@ -1,7 +1,8 @@
 import xs, { Stream, MemoryStream } from 'xstream';
 import { IBaseSources, IBaseSinks, Reducer, AUTHTOKENKEY } from '../interfaces';
+import { HistoryDriver } from '@cycle/history';
 
-export function oAuthify(main: (a: any) => any, redirectAfterLogin?: string) {
+export function oAuthify(main: (a: any) => any) {
     return function(sources: IBaseSources): IBaseSinks {
         const initReducer$ = xs.of<Reducer<any>>(
             prevState => (prevState === undefined ? {} : prevState)
@@ -38,23 +39,13 @@ export function oAuthify(main: (a: any) => any, redirectAfterLogin?: string) {
             });
 
         const storeToken$ = sources.onion.state$
-            .filter(state => state.auth && state.auth.data)
+            .filter(
+                state => state.auth && state.auth.data && state.auth.data.token
+            )
             .map(state => ({
                 key: AUTHTOKENKEY,
                 value: state.auth.data.token
             }));
-
-        const redirectAuthenticated$ = redirectAfterLogin
-            ? (sources.storage as any).local
-                  .getItem(AUTHTOKENKEY)
-                  .filter((el: string) => {
-                      return (
-                          el !== null &&
-                          !window.location.href.includes(redirectAfterLogin)
-                      );
-                  })
-                  .mapTo(redirectAfterLogin)
-            : xs.never();
 
         const sinks = main(sources);
 
@@ -62,8 +53,7 @@ export function oAuthify(main: (a: any) => any, redirectAfterLogin?: string) {
             ...sinks,
             onion: xs.merge(initReducer$, sinks.onion, authRes$),
             API: xs.merge(sinks.API, authReq$),
-            storage: xs.merge(sinks.storage, storeToken$),
-            router: xs.merge(sinks.router, redirectAuthenticated$)
+            storage: xs.merge(sinks.storage, storeToken$)
         };
     };
 }

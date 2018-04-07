@@ -6,6 +6,7 @@ import { extractSinks } from 'cyclejs-utils';
 
 import { driverNames } from './drivers';
 import { IBaseSources, IBaseSinks, Reducer } from './interfaces';
+import { NotFound } from './pages/notFound';
 import { RouteValue, routes } from './routes';
 
 export function App(sources: IBaseSources): IBaseSinks {
@@ -24,10 +25,13 @@ export function App(sources: IBaseSources): IBaseSinks {
 
     const componentSinks$ = match$.map(
         ({ path, value }: { path: string; value: RouteValue }) => {
-            const { component, scope } = value;
+            const { component, scope } = value || {
+                component: NotFound,
+                scope: 'notfound'
+            };
             return isolate(component, { scope, onion: authLense })({
                 ...sources,
-                router: sources.router.path(path)
+                router: sources.router.path(path || '/page-not-found')
             });
         }
     );
