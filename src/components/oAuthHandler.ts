@@ -29,14 +29,17 @@ export function oAuthify(main: (a: any) => any) {
                 };
             });
 
-        const authRes$ = sources.API.select('LOGIN')
-            .flatten()
-            .map(el => {
-                return (state: any) => ({
-                    ...state,
-                    auth: el
-                });
+        // token API responses
+        const authRes$ = sources.API.select('LOGIN').flatten();
+        const tokenRenewalRes$ = sources.API.select('TOKENRENEWAL').flatten();
+
+        const authState$ = xs.merge(authRes$, tokenRenewalRes$).map(el => {
+            return (state: any) => ({
+                ...state,
+                auth: el
             });
+        });
+        //
 
         const storeToken$ = sources.onion.state$
             .filter(
@@ -51,7 +54,7 @@ export function oAuthify(main: (a: any) => any) {
 
         return {
             ...sinks,
-            onion: xs.merge(initReducer$, sinks.onion, authRes$),
+            onion: xs.merge(initReducer$, sinks.onion, authState$),
             API: xs.merge(sinks.API, authReq$),
             storage: xs.merge(sinks.storage, storeToken$)
         };
