@@ -1,6 +1,6 @@
 import xs, { Stream, MemoryStream } from 'xstream';
 import debounce from 'xstream/extra/debounce';
-import { VNode, div, DOMSource } from '@cycle/dom';
+import { VNode, DOMSource } from '@cycle/dom';
 
 import { IBaseSources, IBaseSinks, Reducer } from '../interfaces';
 

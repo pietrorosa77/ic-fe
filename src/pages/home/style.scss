@@ -1,32 +1,8 @@
-.ideachain-home {
-    position: relative;
-    color: #fff;
-    width: 100%;
-    background: url("../../css/img/home-bg.jpg") no-repeat center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    text-align: center;
-    height: 100%;
-    .ideachain-home-text p {
-        font-size: 50px;
-    }
-    .ideachain-home-text h1 {
-        margin: 0;
-        padding: 0;
-        font-weight: bold;
-        font-size: 80px;
-    }
-    .ideachain-home-social {
-        margin: 0 auto;
-        width: 200px;
-        position: absolute;
-        left: 50%;
-        bottom: 100px;
-        margin-left: -100px;
-        .col {
-            margin: 10px;
-        }
-    }
+@import "./themes/default.scss";
+.home {
+  height: 100%;
+  position: relative;
+  .default {
+    @include default;
+  }
 }

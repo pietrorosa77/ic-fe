@@ -1,5 +1,11 @@
 import xs, { Stream, MemoryStream } from 'xstream';
-import { IBaseSources, IBaseSinks, Reducer, AUTHTOKENKEY } from '../interfaces';
+import {
+    IBaseSources,
+    IBaseSinks,
+    Reducer,
+    AUTHTOKENKEY,
+    ACTIONS
+} from '../interfaces';
 import { HistoryDriver } from '@cycle/history';
 
 export function oAuthify(main: (a: any) => any) {
@@ -25,38 +31,35 @@ export function oAuthify(main: (a: any) => any) {
                         provider: res.provider,
                         redirectUri: res.redirectUri
                     },
-                    action: 'LOGIN'
+                    action: ACTIONS.LOGIN
                 };
             });
 
-        // token API responses
-        const authRes$ = sources.API.select('LOGIN').flatten();
-        const tokenRenewalRes$ = sources.API.select('TOKENRENEWAL').flatten();
-
-        const authState$ = xs.merge(authRes$, tokenRenewalRes$).map(el => {
+        const authResp$ = sources.API.select('LOGIN').flatten();
+        const userState$ = authResp$.map((el: any) => {
             return (state: any) => ({
                 ...state,
-                auth: el
+                auth: {
+                    action: el.action,
+                    user: el.data && el.data.user
+                }
             });
         });
-        //
 
-        const storeToken$ = sources.onion.state$
-            .filter(
-                state => state.auth && state.auth.data && state.auth.data.token
-            )
-            .map(state => ({
+        const tokenStore$ = authResp$
+            .filter((el: any) => el.data && el.data.token)
+            .map((el: any) => ({
                 key: AUTHTOKENKEY,
-                value: state.auth.data.token
+                value: el.data.token
             }));
 
         const sinks = main(sources);
 
         return {
             ...sinks,
-            onion: xs.merge(initReducer$, sinks.onion, authState$),
+            onion: xs.merge(initReducer$, sinks.onion, userState$),
             API: xs.merge(sinks.API, authReq$),
-            storage: xs.merge(sinks.storage, storeToken$)
+            storage: xs.merge(sinks.storage, tokenStore$)
         };
     };
 }

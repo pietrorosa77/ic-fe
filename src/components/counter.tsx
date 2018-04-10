@@ -9,7 +9,7 @@ export interface State {
     count: number;
 }
 export const defaultState: State = {
-    count: 30
+    count: 35
 };
 
 export function Counter({ DOM, onion, OAuth }: IBaseSources): IBaseSinks {
@@ -52,7 +52,7 @@ function view(state$: Stream<State>): Stream<VNode> {
         return (
             <div>
                 <h2>My Awesome Cycle.js app - Page 1</h2>
-                <span>{'Counter: ' + state.count}</span>
+                <span>{'Counteru7y7y7: ' + state.count}</span>
                 <button type="button" className="add">
                     Increase
                 </button>

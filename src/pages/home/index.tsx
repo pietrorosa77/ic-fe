@@ -6,13 +6,16 @@ import {
     IBaseSources,
     IBaseSinks,
     Reducer,
-    AUTHTOKENKEY
+    AUTHTOKENKEY,
+    IHomeStructure,
+    IBubblesStructure
 } from '../../interfaces';
 import { SocialLogin } from '../../components/socialLogIn';
+import { Spinner } from '../../components/spinner';
 import { config } from '../../config';
 import './style.scss';
 
-export function Home({ DOM, onion, OAuth, API, storage }: IBaseSources) {
+export function Home({ DOM, onion, OAuth, HTTP, storage }: IBaseSources) {
     const initReducer$ = xs.of<Reducer<any>>(
         prevState => (prevState === undefined ? {} : prevState)
     );
@@ -21,6 +24,36 @@ export function Home({ DOM, onion, OAuth, API, storage }: IBaseSources) {
         .getItem(AUTHTOKENKEY)
         .filter((el: string) => el !== null)
         .mapTo('/my-ideas');
+
+    const homepageDataRequest$ = onion.state$
+        .filter(state => !state.home)
+        .map(el => ({
+            url: `http://${
+                config.awsBucket
+            }.s3.amazonaws.com/home/homePage.json`, // GET method by default
+            category: 'homepage'
+        }));
+
+    const bubblesDataRequest$ = onion.state$
+        .filter(state => !state.bubbles)
+        .map(el => ({
+            url: `http://${
+                config.awsBucket
+            }.s3.amazonaws.com/home/bubbles.json`, // GET method by default
+            category: 'bubbles'
+        }));
+
+    const bubblesDataState$ = HTTP.select('bubbles').flatten();
+    const homepageDataState$ = HTTP.select('homepage').flatten();
+    const homeState$ = xs
+        .combine(bubblesDataState$, homepageDataState$)
+        .map(([bubbles, homeData]) => {
+            return (state: any) => ({
+                ...state,
+                home: homeData.body as IHomeStructure[],
+                bubbles: bubbles.body as IBubblesStructure[]
+            });
+        });
 
     const linProps$ = xs.of({
         provider: 'linkedin',
@@ -59,13 +92,16 @@ export function Home({ DOM, onion, OAuth, API, storage }: IBaseSources) {
         OAuth
     });
 
+    const spinner = isolate(Spinner, 'spinner')({ DOM });
+
     return {
         DOM: view(
             xs.combine(
                 onion.state$,
                 linkedinAuth.DOM,
                 googleAuth.DOM,
-                facebookAuth.DOM
+                facebookAuth.DOM,
+                spinner.DOM
             )
         ),
         OAuth: xs.merge(
@@ -73,28 +109,143 @@ export function Home({ DOM, onion, OAuth, API, storage }: IBaseSources) {
             googleAuth.OAuth,
             facebookAuth.OAuth
         ),
-        onion: initReducer$,
+        HTTP: xs.merge(homepageDataRequest$, bubblesDataRequest$),
+        onion: xs.merge(initReducer$, homeState$),
         router: redirectAuthenticated$
     };
 }
 
-function view(usersResponse$: Stream<[any, any, any, any]>): Stream<VNode> {
-    return usersResponse$.map(([state, linkDom, googDom, facebDom]) => {
-        return (
-            <div className="ideachain-home">
-                <div className="ideachain-home-text">
-                    <p>So, where do you store your</p>
-                    <h1>BIG IDEAS?</h1>
-                    <p className="small">
-                        if you answer any of [a] in my head, [b] in my disk{' '}
-                    </p>
+function view(
+    usersResponse$: Stream<[any, any, any, any, any]>
+): Stream<VNode> {
+    return usersResponse$.map(
+        ([state, linkDom, googDom, facebDom, spinnerDom]) => {
+            const homepageData = state.home as IHomeStructure[];
+            const authData = state.auth as { action: string; user: string };
+            const bubbles = (state.bubbles as IBubblesStructure[]) || [];
+            if (!homepageData) return spinnerDom;
+
+            // TODO: random select from array
+            const home = homepageData[0];
+            return (
+                <div className="home container-fluid ">
+                    <div className={`fullHeight ${home.theme}`}>
+                        <div className="main fullHeight">
+                            <div className="row align-items-end main-inner">
+                                <div className="col">
+                                    <div className="row">
+                                        <div className="col-md-3" />
+                                        <div className="col-12 col-md-6 col-sm-12 mb-1">
+                                            <p>{home.main.line1}</p>
+                                            <h1 className="text-white font-weight-bold">
+                                                {home.main.line2}
+                                            </h1>
+                                            <p>{home.main.line3}</p>
+                                            <h1 className="display-4 text-white font-weight-bold">
+                                                {home.main.line4}
+                                            </h1>
+                                            <p>{home.main.line5}</p>
+                                        </div>
+                                        <div className="col-md-3" />
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-3 col-sm-2 col-lg-4 col-1" />
+                                        <div className="col">
+                                            <div className="row justify-content-md-center mt-5">
+                                                <div className="col">
+                                                    <div className="mt-5 mb-4">
+                                                        <div className="logoText text-white font-weight-bold">
+                                                            IDEA<span className="gray">
+                                                                CHAIN
+                                                            </span>
+                                                        </div>
+                                                        <div className="text-white">
+                                                            {home.main.logoLine}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        {linkDom} {googDom}{' '}
+                                                        {facebDom}
+                                                    </div>
+                                                    <div className="mt-4 font-weight-bold text-white">
+                                                        {home.main.signInLine}
+                                                    </div>
+                                                    <div>
+                                                        {
+                                                            home.main
+                                                                .signInDetails
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-3 col-sm-2 col-lg-4 col-1" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="list">
+                            <div className="row">
+                                <div className="col-8 p-5">
+                                    <h2 className="text-dark font-weight-bold">
+                                        {home.bulletList.title}
+                                    </h2>
+                                    <h5 className="text-dark">
+                                        {home.bulletList.subTitle}
+                                    </h5>
+                                    <ul className="list-unstyled">
+                                        {home.bulletList.list.map((el, i) => (
+                                            <li className="container mt-5">
+                                                <div className="row">
+                                                    <div className="col-1 mr-5">
+                                                        <div className="rounded-circle bg-white">
+                                                            <div>{i + 1}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-sm ml-2 mt-2">
+                                                        <h4 className="title text-dark font-weight-bold">
+                                                            {el.title}
+                                                        </h4>
+                                                        <div className="details">
+                                                            {el.description}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="col-3 network" />
+                            </div>
+                        </div>
+                        <div
+                            className="bubbles"
+                            style={{ position: 'relative' }}
+                        >
+                            {bubbles.map((el, i) => (
+                                <div
+                                    className={`bubble rounded-circle x${i +
+                                        1}`}
+                                    style={{
+                                        backgroundColor: `${
+                                            home.boubbles.focusColor
+                                        }`
+                                    }}
+                                >
+                                    <div className="content">
+                                        <h4 className="font-weight-bold text-white">
+                                            {el.title}
+                                        </h4>
+                                        <h5 className=" text-white">
+                                            {el.description}
+                                        </h5>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-                <div className="ideachain-home-social row">
-                    <div className="col">{linkDom}</div>
-                    <div className="col">{googDom}</div>
-                    <div className="col">{facebDom}</div>
-                </div>
-            </div>
-        );
-    });
+            );
+        }
+    );
 }

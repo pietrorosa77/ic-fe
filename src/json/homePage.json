@@ -1,0 +1,134 @@
+[
+  {
+    "theme": "default",
+    "main": {
+      "line1": "So, where do YOU store your",
+      "line2": "BIG IDEAS?",
+      "line3":
+        "if you answer any of [a] in my head [b] in my disk [c] in my notes... or related... you need to think again:",
+      "line4": "blockchain",
+      "line5":
+        "a seamless service storing your serialized ideas on ethereum, giving you a proof of submission and a timestamp. Why?: Help the world and get the credits you deserve! On your cv, your Linkedin profile and more",
+      "logoLine": "Set your idea in stone",
+      "signInLine": "Sign-in and start now!",
+      "signInDetails":
+        "Get your serialized idea on blockchain, in minutes, no wallet required"
+    },
+    "bulletList": {
+      "title": "My ideas on Blockchain!",
+      "subTitle": "Sounds cool! but why?",
+      "list": [
+        {
+          "title": "Set your ideas in stone!",
+          "description":
+            "your idea is serialized and stored on Ethereum public blockchain. You can prove at any time that you saved this idea at the specific point in time"
+        },
+        {
+          "title": "Reference your ideas in your CV!",
+          "description":
+            "Showcase your innovation mindset in your CV and professional profiles such as Linkedin. Demonstrate the traction you get in the ideachain network"
+        },
+        {
+          "title": "Build a meaningful network!",
+          "description":
+            "Network based on interest, collaboration and interactions driven by your ideas! Explore teams, like-minded visionaires and entrepreneurs"
+        }
+      ]
+    },
+    "boubbles": {
+      "focusColor": "#F8991D",
+      "signInArea": {
+        "title": "Sign-in now - its FREE",
+        "description":
+          "Sign-in with your favorite social media account below, create and share any number of ideas; store up to three ideas on blockchain for free"
+      },
+      "getMoreArea": {
+        "title": "Get More",
+        "description":
+          "Get the free package +10 ideas on blockchain for free + full search on top of the ideachain + private storage on blockchain",
+        "learnMoreUrl": "#home"
+      }
+    },
+    "footer": {
+      "contacts": {
+        "title": "contact us",
+        "fb": "fb contact",
+        "twitt": "twitter",
+        "email": "email@ideachain.net"
+      },
+      "quotes": [
+        {
+          "title": "the most meaningful blockchain application so far",
+          "when": "March 2018",
+          "who": "whatever"
+        }
+      ]
+    }
+  },
+  {
+    "theme": "custom1",
+    "main": {
+      "line1": "So, where do YOU store your",
+      "line2": "BIG IDEAS?",
+      "line3":
+        "if you answer any of [a] in my head [b] in my disk [c] in my notes... or related... you need to think again:",
+      "line4": "blockchain",
+      "line5":
+        "a seamless service storing your serialized ideas on ethereum, giving you a proof of submission and a timestamp. Why?: Help the world and get the credits you deserve! On your cv, your Linkedin profile and more",
+      "logoLine": "Set your idea in stone",
+      "signInLine": "Sign-in and start now!",
+      "signInDetails":
+        "Get your serialized idea on blockchain, in minutes, no wallet required"
+    },
+    "bulletList": {
+      "title": "My ideas on Blockchain!",
+      "subTitle": "Sounds cool! but why?",
+      "list": [
+        {
+          "title": "Set your ideas in stone!",
+          "description":
+            "your idea is serialized and stored on Ethereum public blockchain. You can prove at any time that you saved this idea at the specific point in time"
+        },
+        {
+          "title": "Reference your ideas in your CV!",
+          "description":
+            "Showcase your innovation mindset in your CV and professional profiles such as Linkedin. Demonstrate the traction you get in the ideachain network"
+        },
+        {
+          "title": "Build a meaningful network!",
+          "description":
+            "Network based on interest, collaboration and interactions driven by your ideas! Explore teams, like-minded visionaires and entrepreneurs"
+        }
+      ]
+    },
+    "boubbles": {
+      "focusColor": "#F8991D",
+      "signInArea": {
+        "title": "Sign-in now - its FREE",
+        "description":
+          "Sign-in with your favorite social media account below, create and share any number of ideas; store up to three ideas on blockchain for free"
+      },
+      "getMoreArea": {
+        "title": "Get More",
+        "description":
+          "Get the free package +10 ideas on blockchain for free + full search on top of the ideachain + private storage on blockchain",
+        "learnMoreUrl": "#home"
+      }
+    },
+    "footer": {
+      "contacts": {
+        "title": "contact us",
+        "fb": "fb contact",
+        "twitt": "twitter",
+        "email": "email@ideachain.net"
+      },
+      "quotes": [
+        {
+          "title": "the most meaningful blockchain application so far",
+          "when": "March 2018",
+          "who": "whatever"
+        }
+      ]
+    }
+  }
+]

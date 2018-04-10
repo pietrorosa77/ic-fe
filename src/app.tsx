@@ -39,6 +39,13 @@ export function App(sources: IBaseSources): IBaseSinks {
     const sinks = extractSinks(componentSinks$, driverNames);
     return {
         ...sinks,
+        DOM: view(sinks.DOM),
         onion: xs.merge(initReducer$, sinks.onion)
     };
+}
+
+function view(childDOM: Stream<VNode>): Stream<VNode> {
+    return childDOM.map(child => (
+        <div className="container-fluid fullHeight">{child}</div>
+    ));
 }

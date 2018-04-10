@@ -22,19 +22,6 @@ export function authorize(
                 token === null || isTokenExpired(token) ? false : true
         );
 
-        const renewTokenReq$ = xs
-            .combine(authStatus$, token$)
-            .filter(
-                ([isAuth, token]) =>
-                    isAuth &&
-                    tokenAboutToExpire(token as string, tokenExpiringLimit)
-            )
-            .map(([]) => ({
-                url: 'sessions',
-                method: 'GET',
-                action: 'TOKENRENEWAL'
-            }));
-
         const componentSinks$ = authStatus$.map(
             (authenticated: boolean) =>
                 authenticated
@@ -45,8 +32,7 @@ export function authorize(
         const sinks = extractSinks(componentSinks$, driverNames);
 
         return {
-            ...sinks,
-            API: xs.merge(sinks.API, renewTokenReq$)
+            ...sinks
         };
     };
 }
@@ -55,18 +41,6 @@ function isTokenExpired(token: string): boolean {
     const tokenExp = getTokenExpiryTime(token);
     const current_time = getCurrentTime();
     return tokenExp < current_time;
-}
-
-function tokenAboutToExpire(token: string, limit: number) {
-    const tokenExp = getTokenExpiryTime(token);
-    const tokenExpTimestamp = new Date(tokenExp * 1000).getTime() / 1000;
-    //const now = Date.now()
-    //const now = Date.UTC()
-    const current_time = getCurrentTime();
-    const expDelta = tokenExpTimestamp - current_time;
-    let minutesDifference = Math.floor(expDelta / 1000 / 60);
-    debugger;
-    return minutesDifference <= limit;
 }
 
 function getTokenExpiryTime(token: string) {

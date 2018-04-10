@@ -32,5 +32,57 @@ export interface IBaseSinks {
     onion?: Stream<any>;
 }
 
+export interface IHomeStructure {
+    theme: string;
+    main: {
+        line1: string;
+        line2: string;
+        line3: string;
+        line4: string;
+        line5: string;
+        logoLine: string;
+        signInLine: string;
+        signInDetails: string;
+    };
+    bulletList: {
+        title: string;
+        subTitle: string;
+        list: Array<{
+            title: string;
+            description: string;
+        }>;
+    };
+    boubbles: {
+        focusColor: string;
+        signInArea: {
+            title: string;
+            description: string;
+        };
+        getMoreArea: {
+            title: string;
+            description: string;
+            learnMoreUrl: string;
+        };
+    };
+    footer: {
+        contacts: Array<{
+            title: string;
+            fb: string;
+            twitt: string;
+            email: string;
+        }>;
+        quotes: Array<{ title: string; when: string; who: string }>;
+    };
+}
+
+export interface IBubblesStructure {
+    title: string;
+    description: string;
+}
+
 export type Reducer<T> = (prev: T) => T | undefined;
 export const AUTHTOKENKEY = 'AUTHTOKENKEY';
+
+export const ACTIONS = {
+    LOGIN: 'LOGIN'
+};

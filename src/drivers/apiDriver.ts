@@ -4,7 +4,10 @@ import { adapt } from '@cycle/run/lib/adapt';
 import * as R from 'ramda';
 
 export function createResponse$(
-    tokenProvider: () => string | undefined,
+    tokenProvider: {
+        read: () => string | undefined;
+        write: (tkn: string) => void;
+    },
     reqOptions: IApiCallOption,
     apiUrl: string
 ): Stream<{ action: string; data?: Response }> {
@@ -16,8 +19,8 @@ export function createResponse$(
                 const result = await executeApiCall(
                     `${apiUrl}/${reqOptions.url}`,
                     reqOptions.method,
-                    reqOptions.data,
-                    tokenProvider()
+                    tokenProvider,
+                    reqOptions.data
                 );
                 listener.next({ action: `${action}-SUCCESS`, data: result });
             } catch (error) {
@@ -31,7 +34,10 @@ export function createResponse$(
 }
 
 export function makeAPIDriver(
-    tokenProvider: () => string | undefined,
+    tokenProvider: {
+        read: () => string | undefined;
+        write: (tkn: string) => void;
+    },
     apiUrl: string
 ): Driver<Stream<IApiCallOption>, APISource> {
     function httpDriver(
@@ -127,7 +133,10 @@ export class APISource {
 }
 
 function requestInputToResponse$(
-    tokenProvider: () => string,
+    tokenProvider: {
+        read: () => string | undefined;
+        write: (tkn: string) => void;
+    },
     apiUrl: string,
     reqInput: IApiCallOption
 ): MemoryStream<{ action: string; data?: Response }> {
@@ -148,10 +157,17 @@ function requestInputToResponse$(
 async function executeApiCall(
     url: string,
     method: string,
-    data?: any,
-    token?: string
+    tokenProvider: {
+        read: () => string | undefined;
+        write: (tkn: string) => void;
+    },
+    data?: any
 ) {
-    const requestOptions = buildRequestOptions(method, data || null, token);
+    const requestOptions = buildRequestOptions(
+        method,
+        data || null,
+        tokenProvider.read()
+    );
     const response = await fetch(url, requestOptions);
 
     const ret = await response.json();
@@ -159,6 +175,8 @@ async function executeApiCall(
     if (!response.ok) {
         throw ret;
     } else {
+        const refreshedToken = response.headers.get('x-ideachaintkn');
+        if (refreshedToken) tokenProvider.write(refreshedToken);
         return ret;
     }
 }

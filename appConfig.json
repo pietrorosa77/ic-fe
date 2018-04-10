@@ -1,7 +1,7 @@
 {
   "API_GATEWAY_URL":
     "https://fopggjizh8.execute-api.eu-west-1.amazonaws.com/prod",
-  "STORAGE_BUCKET": "ideachain-app-uploads",
+  "STORAGE_BUCKET": "ideachainbucket",
   "GOOGLE_CLIENTID":
     "878956798159-b0dnj4n67qcs793n09l4etsvfklspar5.apps.googleusercontent.com",
   "GOOGLE_OAUTH": "https://accounts.google.com/o/oauth2/v2/auth",
