@@ -9,7 +9,7 @@ import { mockDOMSource, VNode } from '@cycle/dom';
 import { mockTimeSource } from '@cycle/time';
 import { testOptions } from './testOptions';
 
-import { Counter, defaultState } from '../src/components/counter';
+import { MyIdeas } from '../src/components/myIdeas';
 
 export const expectedHTML = (count: any) => `
     <div>
@@ -37,16 +37,13 @@ const createTest = (usePrev: boolean) => () => {
                 });
 
                 const app: any = onionify(
-                    usePrev ? addPrevState(Counter, { count }) : Counter
+                    usePrev ? addPrevState(MyIdeas, { count }) : MyIdeas
                 )({ DOM } as any);
                 const html$ = (app.DOM as Stream<VNode>).map(toHtml);
 
                 const expected$ = xs
                     .merge(add$.mapTo(+1), subtract$.mapTo(-1))
-                    .fold(
-                        (acc, curr) => acc + curr,
-                        usePrev ? count : defaultState.count
-                    )
+                    .fold((acc, curr) => acc + curr, usePrev ? count : 0)
                     .map(expectedHTML);
 
                 Time.assertEqual(html$, expected$, htmlLooksLike);
@@ -70,7 +67,7 @@ describe('counter tests', () => {
                     '[data-action="navigate"]': { click: click$ }
                 });
 
-                const app = onionify(Counter as any)({ DOM } as any);
+                const app = onionify(MyIdeas as any)({ DOM } as any);
                 const router$ = app.router as Stream<string>;
 
                 const expected$ = click$.mapTo('/p2');

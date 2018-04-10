@@ -46,7 +46,8 @@
         "title": "Get More",
         "description":
           "Get the free package +10 ideas on blockchain for free + full search on top of the ideachain + private storage on blockchain",
-        "learnMoreUrl": "#home"
+        "learnMoreUrl": "#home",
+        "learnMoreText": "Learn More"
       }
     },
     "footer": {

@@ -1,161 +1,200 @@
 @mixin default {
-    .main {
+  .main {
+    text-align: center;
+    position: relative;
+    background: no-repeat center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("../../css/img/home-bg.jpg");
+    color: #bfbbbb;
+    .main-inner {
+      height: 90%;
+    }
+  }
+  .list {
+    background-color: #f9f7f7;
+    .network {
+      background: no-repeat;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-image: url("../../css/img/network.png");
+    }
+    .rounded-circle {
+      position: relative;
+      height: 5rem;
+      width: 5rem;
+      border: 1px solid #bdbdbd;
+      div {
+        position: absolute;
+        top: 6%;
+        width: 100%;
+        font-size: 3rem;
+        vertical-align: middle;
         text-align: center;
+      }
+    }
+  }
+  .bubbles {
+    height: 25rem;
+    overflow: hidden;
+    background: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("../../css/img/bubbles.jpg");
+    .bubble {
+      position: absolute;
+      text-align: center;
+      opacity: 0.6;
+      height: 10rem;
+      width: 10rem;
+      .content {
         position: relative;
-        background: no-repeat center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../css/img/home-bg.jpg");
-        color: #bfbbbb;
-        .main-inner {
-            height: 90%;
-            .logoText {
-                font-family: "Bungee Outline";
-                font-size: 2rem;
-                .gray {
-                    color: #64626d;
-                }
-            }
-        }
+        top: 30%;
+      }
     }
-    .list {
-        background-color: #f1f1f1;
-        .network {
-            background: no-repeat;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-            background-image: url("../../css/img/network.png");
-        }
-        .rounded-circle {
-            position: relative;
-            height: 5rem;
-            width: 5rem;
-            border: 1px solid #bdbdbd;
-            div {
-                position: absolute;
-                top: 6%;
-                width: 100%;
-                font-size: 3rem;
-                vertical-align: middle;
-                text-align: center;
-            }
-        }
+  }
+  .x1 {
+    -webkit-transform: scale(0.9);
+    -moz-transform: scale(0.9);
+    transform: scale(0.9);
+    -webkit-animation: moveclouds 35s linear infinite,
+      sideWays 4s ease-in-out infinite alternate;
+    -moz-animation: moveclouds 35s linear infinite,
+      sideWays 4s ease-in-out infinite alternate;
+    -o-animation: moveclouds 35s linear infinite,
+      sideWays 4s ease-in-out infinite alternate;
+  }
+  .x2 {
+    left: 30%;
+    -webkit-transform: scale(0.6);
+    -moz-transform: scale(0.6);
+    transform: scale(0.6);
+    -webkit-animation: moveclouds 30s linear infinite,
+      sideWays 5s ease-in-out infinite alternate;
+    -moz-animation: moveclouds 30s linear infinite,
+      sideWays 5s ease-in-out infinite alternate;
+    -o-animation: moveclouds 30s linear infinite,
+      sideWays 5s ease-in-out infinite alternate;
+  }
+  .x3 {
+    left: 15%;
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    transform: scale(0.8);
+    -webkit-animation: moveclouds 25s linear infinite,
+      sideWays 4s ease-in-out infinite alternate;
+    -moz-animation: moveclouds 25s linear infinite,
+      sideWays 4s ease-in-out infinite alternate;
+    -o-animation: moveclouds 25s linear infinite,
+      sideWays 4s ease-in-out infinite alternate;
+  }
+  .x4 {
+    left: 55%;
+    -webkit-transform: scale(0.75);
+    -moz-transform: scale(0.75);
+    transform: scale(0.75);
+    -webkit-animation: moveclouds 20s linear infinite,
+      sideWays 2s ease-in-out infinite alternate;
+    -moz-animation: moveclouds 20s linear infinite,
+      sideWays 2s ease-in-out infinite alternate;
+    -o-animation: moveclouds 20s linear infinite,
+      sideWays 2s ease-in-out infinite alternate;
+  }
+  .x5 {
+    left: 70%;
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    transform: scale(0.8);
+    -webkit-animation: moveclouds 15s linear infinite,
+      sideWays 1s ease-in-out infinite alternate;
+    -moz-animation: moveclouds 15s linear infinite,
+      sideWays 1s ease-in-out infinite alternate;
+    -o-animation: moveclouds 15s linear infinite,
+      sideWays 1s ease-in-out infinite alternate;
+  }
+  @-webkit-keyframes moveclouds {
+    0% {
+      top: 100%;
     }
-    .bubbles {
-        height: 30rem;
-        overflow: hidden;
-        background: no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../css/img/bubbles.jpg");
-        .bubble {
-            position: absolute;
-            text-align: center;
-            opacity: 0.6;
-            height: 10rem;
-            width: 10rem;
-            .content {
-                position: relative;
-                top: 30%;
-            }
-        }
+    100% {
+      top: 0%;
     }
-    .x1 {
-        -webkit-transform: scale(0.9);
-        -moz-transform: scale(0.9);
-        transform: scale(0.9);
-        -webkit-animation: moveclouds 35s linear infinite, sideWays 4s ease-in-out infinite alternate;
-        -moz-animation: moveclouds 35s linear infinite, sideWays 4s ease-in-out infinite alternate;
-        -o-animation: moveclouds 35s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  }
+  @-webkit-keyframes sideWays {
+    0% {
+      margin-left: 0px;
     }
-    .x2 {
-        left: 30%;
-        -webkit-transform: scale(0.6);
-        -moz-transform: scale(0.6);
-        transform: scale(0.6);
-        -webkit-animation: moveclouds 30s linear infinite, sideWays 5s ease-in-out infinite alternate;
-        -moz-animation: moveclouds 30s linear infinite, sideWays 5s ease-in-out infinite alternate;
-        -o-animation: moveclouds 30s linear infinite, sideWays 5s ease-in-out infinite alternate;
+    100% {
+      margin-left: 50px;
     }
-    .x3 {
-        left: 15%;
-        -webkit-transform: scale(0.8);
-        -moz-transform: scale(0.8);
-        transform: scale(0.8);
-        -webkit-animation: moveclouds 25s linear infinite, sideWays 4s ease-in-out infinite alternate;
-        -moz-animation: moveclouds 25s linear infinite, sideWays 4s ease-in-out infinite alternate;
-        -o-animation: moveclouds 25s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  }
+  @-moz-keyframes moveclouds {
+    0% {
+      top: 100%;
     }
-    .x4 {
-        left: 55%;
-        -webkit-transform: scale(0.75);
-        -moz-transform: scale(0.75);
-        transform: scale(0.75);
-        -webkit-animation: moveclouds 20s linear infinite, sideWays 2s ease-in-out infinite alternate;
-        -moz-animation: moveclouds 20s linear infinite, sideWays 2s ease-in-out infinite alternate;
-        -o-animation: moveclouds 20s linear infinite, sideWays 2s ease-in-out infinite alternate;
+    100% {
+      top: 0%;
     }
-    .x5 {
-        left: 70%;
-        -webkit-transform: scale(0.8);
-        -moz-transform: scale(0.8);
-        transform: scale(0.8);
-        -webkit-animation: moveclouds 15s linear infinite, sideWays 1s ease-in-out infinite alternate;
-        -moz-animation: moveclouds 15s linear infinite, sideWays 1s ease-in-out infinite alternate;
-        -o-animation: moveclouds 15s linear infinite, sideWays 1s ease-in-out infinite alternate;
+  }
+  @-moz-keyframes sideWays {
+    0% {
+      margin-left: 0px;
     }
-    @-webkit-keyframes moveclouds {
-        0% {
-            top: 100%;
-        }
-        100% {
-            top: 0%;
-        }
+    100% {
+      margin-left: 50px;
     }
-    @-webkit-keyframes sideWays {
-        0% {
-            margin-left: 0px;
-        }
-        100% {
-            margin-left: 50px;
-        }
+  }
+  @-o-keyframes moveclouds {
+    0% {
+      top: 100%;
     }
-    @-moz-keyframes moveclouds {
-        0% {
-            top: 100%;
-        }
-        100% {
-            top: 0%;
-        }
+    100% {
+      top: 0%;
     }
-    @-moz-keyframes sideWays {
-        0% {
-            margin-left: 0px;
-        }
-        100% {
-            margin-left: 50px;
-        }
+  }
+  @-o-keyframes sideWays {
+    0% {
+      margin-left: 0px;
     }
-    @-o-keyframes moveclouds {
-        0% {
-            top: 100%;
-        }
-        100% {
-            top: 0%;
-        }
+    100% {
+      margin-left: 50px;
     }
-    @-o-keyframes sideWays {
-        0% {
-            margin-left: 0px;
-        }
-        100% {
-            margin-left: 50px;
-        }
+  }
+  .getMore {
+    background-color: #f9f7f7;
+  }
+  .footer {
+    background-color: #000;
+    .cUs {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 100%;
+      background-color: #fff;
+      border: 1px solid rgb(228, 225, 225);
+      &.tweet {
+        content: url("../../css/img/lin.png");
+      }
+      &.fb {
+        content: url("../../css/img/fb.png");
+      }
+      &.email {
+        content: url("../../css/img/google.png");
+      }
     }
+  }
+  .logoText {
+    font-family: "Bungee Outline";
+    font-size: 2rem;
+    .gray {
+      color: #64626d;
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import xs from 'xstream';
 import { Component, IBaseSources } from './interfaces';
-import { Counter } from './components/counter';
+import { MyIdeas } from './components/myIdeas';
 import { authorize } from './components/authorize';
 import { Home } from './pages/home';
 
@@ -21,5 +21,5 @@ const initRoute = ({ router }: IBaseSources) => {
 export const routes: Routes = {
     '/': { component: initRoute, scope: 'homered' },
     '/home': { component: Home, scope: 'home' },
-    '/my-ideas': { component: authorize(Counter, '/home'), scope: 'myideas' }
+    '/my-ideas': { component: authorize(MyIdeas, '/home'), scope: 'myideas' }
 };

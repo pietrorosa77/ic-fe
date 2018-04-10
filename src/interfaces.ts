@@ -61,16 +61,17 @@ export interface IHomeStructure {
         getMoreArea: {
             title: string;
             description: string;
+            learnMoreText: string;
             learnMoreUrl: string;
         };
     };
     footer: {
-        contacts: Array<{
+        contacts: {
             title: string;
             fb: string;
             twitt: string;
             email: string;
-        }>;
+        };
         quotes: Array<{ title: string; when: string; who: string }>;
     };
 }

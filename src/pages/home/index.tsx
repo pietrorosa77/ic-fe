@@ -101,6 +101,9 @@ export function Home({ DOM, onion, OAuth, HTTP, storage }: IBaseSources) {
                 linkedinAuth.DOM,
                 googleAuth.DOM,
                 facebookAuth.DOM,
+                linkedinAuth.DOM,
+                googleAuth.DOM,
+                facebookAuth.DOM,
                 spinner.DOM
             )
         ),
@@ -115,18 +118,27 @@ export function Home({ DOM, onion, OAuth, HTTP, storage }: IBaseSources) {
     };
 }
 
-function view(
-    usersResponse$: Stream<[any, any, any, any, any]>
-): Stream<VNode> {
+function view(usersResponse$: Stream<any>): Stream<VNode> {
     return usersResponse$.map(
-        ([state, linkDom, googDom, facebDom, spinnerDom]) => {
+        ([
+            state,
+            linkDom,
+            googDom,
+            facebDom,
+            linkDom2,
+            googDom2,
+            facebDom2,
+            spinnerDom
+        ]) => {
             const homepageData = state.home as IHomeStructure[];
             const authData = state.auth as { action: string; user: string };
             const bubbles = (state.bubbles as IBubblesStructure[]) || [];
+
             if (!homepageData) return spinnerDom;
 
             // TODO: random select from array
             const home = homepageData[0];
+            const quote = home.footer.quotes[0];
             return (
                 <div className="home container-fluid ">
                     <div className={`fullHeight ${home.theme}`}>
@@ -242,6 +254,84 @@ function view(
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                        <div className="getMore pt-5">
+                            <div className="row justify-content-center">
+                                <div className="col-5 p-5 text-center">
+                                    <h5 className="title text-dark font-weight-bold">
+                                        {home.boubbles.signInArea.title}
+                                    </h5>
+                                    <div>
+                                        {home.boubbles.signInArea.description}
+                                    </div>
+                                    <div className="mt-3">
+                                        {linkDom2} {googDom2} {facebDom2}
+                                    </div>
+                                </div>
+                                <div className="col-1 p-5 text-center">
+                                    <div className="divider border fullHeight" />
+                                </div>
+                                <div className="col-5 p-5 text-center">
+                                    <h5 className="title text-dark font-weight-bold">
+                                        {home.boubbles.getMoreArea.title}
+                                    </h5>
+                                    <div>
+                                        {home.boubbles.getMoreArea.description}
+                                    </div>
+                                    <a
+                                        className="btn btn-primary mt-3"
+                                        href={
+                                            home.boubbles.getMoreArea
+                                                .learnMoreUrl
+                                        }
+                                        role="button"
+                                    >
+                                        {
+                                            home.boubbles.getMoreArea
+                                                .learnMoreText
+                                        }
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="footer mb-5 text-white p-5">
+                            <div className="row border-bottom pb-3">
+                                <div className="col-3">
+                                    <div className="logoText text-white font-weight-bold">
+                                        IDEA<span className="gray">CHAIN</span>
+                                    </div>
+                                    <div className="text-white">
+                                        {home.main.logoLine}
+                                    </div>
+                                </div>
+                                <div className="col-9 text-right">
+                                    <blockquote className="blockquote">
+                                        <p className="mb-0">{`" ${
+                                            quote.title
+                                        } "`}</p>
+                                        <footer className="blockquote-footer">
+                                            {quote.when}{' '}
+                                            <cite title="Source Title">
+                                                {quote.who}
+                                            </cite>
+                                        </footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                            <div className="text-right mt-3 text-capitalize">
+                                <span className="mr-1">
+                                    {home.footer.contacts.title}
+                                </span>
+                                <a href={home.footer.contacts.fb}>
+                                    <img className="cUs fb ml-2" />
+                                </a>{' '}
+                                <a href={home.footer.contacts.twitt}>
+                                    <img className="cUs tweet ml-2" />
+                                </a>{' '}
+                                <a href={home.footer.contacts.email}>
+                                    <img className="cUs email ml-2" />
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
